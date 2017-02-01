@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/4.1/phpunit.xsd"
+         backupGlobals="false"
+         backupStaticAttributes="false"
+         colors="true"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true"
+         processIsolation="false"
+         stopOnFailure="false"
+         syntaxCheck="false"
+         bootstrap="./tests/app/autoload.php"
+>
+
+    <testsuites>
+        <testsuite name="tests">
+            <directory>./tests/functional</directory>
+            <directory>./tests/unit</directory>
+        </testsuite>
+    </testsuites>
+
+    <php>
+        <server name="KERNEL_DIR" value="tests/app/" />
+    </php>
+
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <!--<directory suffix=".php">./src/Command</directory>-->
+            <!--<directory suffix=".php">./src/Controller</directory>-->
+            <!--<directory suffix=".php">./src/DependencyInjection</directory>-->
+            <!--<directory suffix=".php">./src/Event</directory>-->
+            <!--<directory suffix=".php">./src/Form</directory>-->
+            <!--<directory suffix=".php">./src/Listener</directory>-->
+            <!--<directory suffix=".php">./src/Repository</directory>-->
+            <!--<directory suffix=".php">./src/Service</directory>-->
+        </whitelist>
+    </filter>
+
+</phpunit>

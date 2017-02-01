@@ -1,0 +1,11 @@
+---
+parameters:
+  dende_multitenancy.listener.command.class: Dende\MultitenancyBundle\Listener\CommandListener
+  dende_multitenanacy.tenant_manager.class:  Dende\MultitenancyBundle\Manager\TenantManager
+
+services:
+  dende_multitenancy.listener.command:
+    class: %dende_multitenancy.listener.command.class%
+
+  dende_multitenanacy.tenant_manager:
+    class: %dende_multitenanacy.tenant_manager.class%

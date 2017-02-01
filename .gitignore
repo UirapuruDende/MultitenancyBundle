@@ -1,0 +1,11 @@
+/.php_cs.cache
+/vendor/
+/.idea/
+/tests/app/logs/*
+/tests/app/cache/*
+!/tests/app/cache/.gitkeep
+!/tests/app/logs/.gitkeep
+/tests/app/bundles
+/bin/
+tmp*
+composer.phar

@@ -1,0 +1,145 @@
+framework:
+    ide: "phpstorm://%%f:%%l"
+    secret: "Three can keep a secret, if two of them are dead."
+    translator:
+      fallback: en
+    test: ~
+    form:
+      enabled: true
+    router:
+        resource: "%kernel.root_dir%/routing.yml"
+        strict_requirements: ~
+    templating:
+        engines: ['twig']
+    csrf_protection:
+      enabled: true
+    session:
+#        cookie_lifetime:  %session_lifetime%
+#        gc_maxlifetime: 1800
+#        handler_id:  ~
+        storage_id: session.storage.filesystem
+    profiler:
+        collect: true
+        only_exceptions: false
+        enabled: true
+    validation:      { enabled: true, enable_annotations: true }
+    fragments:       ~
+    http_method_override: true
+
+web_profiler:
+    toolbar: true
+    intercept_redirects: false
+
+twig:
+    debug:            true
+    strict_variables: true
+    form:
+        resources: ['bootstrap_3_layout.html.twig']
+
+sensio_framework_extra:
+    router:      { annotations: true }
+    request:     { converters: true, auto_convert: true }
+    view:        { annotations: true }
+    cache:       { annotations: true }
+    security:    { annotations: true }
+    psr_message: { enabled: false }
+
+monolog:
+  handlers:
+    main:
+      type: stream
+      path: "%kernel.logs_dir%/%kernel.environment%.log"
+      level: DEBUG
+    doctrine:
+      type: stream
+      path: "%kernel.logs_dir%/doctrine.log"
+      level: DEBUG
+      channels: ["doctrine"]
+
+liip_functional_test: ~
+
+doctrine:
+    dbal:
+      default_connection: first
+      connections:
+        first:
+          driver:   pdo_sqlite
+          host:     ~
+          dbname:   ~
+          user:     ~
+          password: ~
+          path: "%kernel.cache_dir%/first.db"
+          charset:  UTF8
+          server_version: "5.6"
+          wrapper_class: Dende\MultitenancyBundle\Connection\Wrapper
+        second:
+          driver:   pdo_sqlite
+          host:     ~
+          dbname:   ~
+          user:     ~
+          password: ~
+          path: "%kernel.cache_dir%/second.db"
+          charset:  UTF8
+          server_version: "5.6"
+          wrapper_class: Dende\MultitenancyBundle\Connection\Wrapper
+        third:
+          driver:   pdo_sqlite
+          host:     ~
+          dbname:   ~
+          user:     ~
+          password: ~
+          path: "%kernel.cache_dir%/third.db"
+          charset:  UTF8
+          server_version: "5.6"
+          wrapper_class: Dende\MultitenancyBundle\Connection\Wrapper
+
+    orm:
+        auto_generate_proxy_classes: %kernel.debug%
+        default_entity_manager:   first
+        entity_managers:
+          first:
+            auto_mapping: false
+            connection: first
+            mappings: ~
+          second:
+            auto_mapping: false
+            connection: first
+            mappings: ~
+          third:
+            auto_mapping: false
+            connection: first
+            mappings: ~
+
+dende_multitenancy:
+  patched_commands:
+    - "doctrine:*"
+
+  connections:
+    first:
+      command_parameter_name:         subdomain
+      command_parameter_description:  Provide subdomain for first connection tenant
+      fixtures_dir: ~
+    second:
+      command_parameter_name:         user-email
+      command_parameter_description:  Provide user email for second connection tenant
+      fixtures_dir: ~
+    third:
+      command_parameter_name:         country
+      command_parameter_description:  Provide country code for third connection tenant
+      fixtures_dir: ~
+
+services:
+  provider.subdomain:
+    class: Tests\App\Provider\Subdomain
+    tags:
+      - {name: tenant_provider, connection_name: first}
+
+  provider.username:
+    class: Tests\App\Provider\Username
+    tags:
+      - {name: tenant_provider, connection_name: second}
+
+  provider.country:
+    class: Tests\App\Provider\Country
+    tags:
+      - {name: tenant_provider, connection_name: third}
