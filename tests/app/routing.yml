@@ -5,4 +5,4 @@ _wdt:
 
 _profiler:
     resource: "@WebProfilerBundle/Resources/config/routing/profiler.xml"
-prefix: /_profiler
+    prefix: /_profiler

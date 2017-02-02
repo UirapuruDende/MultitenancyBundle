@@ -1,41 +1,44 @@
 <?php
-namespace Dende\Multitenancy\Listener;
+namespace Dende\MultitenancyBundle\Listener;
 
-use Dende\MultitenancyBundle\Connection\Wrapper;
-use Dende\MultitenancyBundle\Provider\TenantProviderInterface;
-use Doctrine\DBAL\Connection;
+use Dende\MultitenancyBundle\Manager\TenantManager;
 use Doctrine\DBAL\Schema\AbstractSchemaManager;
 use Exception;
+use ReflectionClass;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Command\HelpCommand;
 use Symfony\Component\Console\Event\ConsoleCommandEvent;
 use Symfony\Component\Console\Input\InputOption;
 
 class CommandListener
 {
-    /** @var  Wrapper */
-    private $connectionWrapper;
-
-    /** @var  TenantProviderInterface */
-    private $tenantProvider;
+    /** @var  TenantManager */
+    private $tenantManager;
 
     /** @var  array|string[] */
     private $allowedCommands;
+
+    /** @var AbstractSchemaManager */
+    private $schemaManager;
+
+    /** @var array */
+    private $config;
 
     /**
      * ClubConnectionCommandListener constructor.
      * @param array $config
      */
-    public function __construct(TenantProviderInterface $tenantProvider, Connection $connectionWrapper, AbstractSchemaManager $schemaManager, $allowedCommands = [])
+    public function __construct(TenantManager $tenantManager, AbstractSchemaManager $schemaManager, $allowedCommands = [], $config = [])
     {
-        $this->tenantProvider = $tenantProvider;
-        $this->connectionWrapper = $connectionWrapper;
+        $this->tenantManager = $tenantManager;
         $this->schemaManager = $schemaManager;
         $this->allowedCommands = $allowedCommands;
+        $this->config = $config;
     }
 
     /**
      * @param ConsoleCommandEvent $event
-     * @throws \Exception
+     * @throws Exception
      */
     public function onConsoleCommand(ConsoleCommandEvent $event)
     {
@@ -46,42 +49,21 @@ class CommandListener
             return;
         }
 
-        $command->getDefinition()->addOption(
-            new InputOption('tenant', null, InputOption::VALUE_OPTIONAL, 'tenant name', null)
-        );
+        foreach($this->config as $connection) {
+            $option = new InputOption($connection['param'], null, InputOption::VALUE_OPTIONAL, $connection['desc'], null);
 
-        if(!$command->getDefinition()->hasOption('em')) {
-            $command->getDefinition()->addOption(
-                new InputOption('em', null, InputOption::VALUE_OPTIONAL, 'The entity manager to use for this command')
-            );
+            $commandDefinition = $event->getCommand()->getDefinition();
+            $commandDefinition->addOption($option);
+
+            $inputDefinition = $event->getCommand()->getApplication()->getDefinition();
+            $inputDefinition->addOption($option);
+
+            $input->bind($commandDefinition);
+
+            if($tenantId = $input->getOption($connection['param'])) {
+                $this->tenantManager->switchConnection($connection['name'], $tenantId);
+            }
         }
-
-        $input->bind($command->getDefinition());
-
-        if(is_null($input->getOption('tenant'))) {
-            $event->getOutput()->write('<error>default:</error> ');
-            return;
-        }
-
-        $tenantName = $input->getOption('tenant');
-
-        $input->setOption('em', 'tenant');
-        $command->getDefinition()->getOption('em')->setDefault('tenant');
-
-        /** @var Tenant $tenant */
-        $tenant = $this->tenantProvider->getTenant($tenantName);
-
-        if($tenant === null) {
-            throw new Exception(sprintf('Tenant identified as %s does not exists', $tenantName));
-        }
-
-        $this->connectionWrapper->forceSwitch(
-            $tenant->getServer(), $tenant->getDatabase(), $tenant->getUsername(), $tenant->getPassword(), false
-        );
-
-        $event->getOutput()->writeln(
-            sprintf('<error>%s@%s:</error> ', $tenant->getUsername(), $tenant->getDatabase())
-        );
     }
 
     /**
@@ -90,6 +72,27 @@ class CommandListener
      */
     private function isProperCommand(Command $command)
     {
-        return in_array($command->getName(), $this->allowedCommands);
+        $testedName = $command->getName();
+
+        if($testedName === 'help') {
+            $reflectionClass = new ReflectionClass(HelpCommand::class);
+            $reflectionProperty = $reflectionClass->getProperty('command');
+            $reflectionProperty->setAccessible(true);
+            /** @var Command $command */
+            $command = $reflectionProperty->getValue($command);
+
+            if($command === null) {
+                return false;
+            }
+
+            $testedName = $command->getName();
+        }
+
+        $result = array_map(function($allowedCommand) use ($testedName){
+            $prepared = strtr(preg_quote($allowedCommand, '#'), array('\*' => '.*', '\?' => '.'));
+            return preg_match("#^".$prepared."$#i", $testedName);
+        }, $this->allowedCommands);
+
+        return array_sum($result) > 0 || in_array($command->getName(), $this->allowedCommands);
     }
 }

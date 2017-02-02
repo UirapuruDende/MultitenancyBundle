@@ -131,6 +131,8 @@ dende_multitenancy:
 services:
   provider.subdomain:
     class: Tests\App\Provider\Subdomain
+    arguments:
+      - %subdomain_provider_storage%
     tags:
       - {name: tenant_provider, connection_name: first}
 
@@ -143,3 +145,11 @@ services:
     class: Tests\App\Provider\Country
     tags:
       - {name: tenant_provider, connection_name: third}
+
+parameters:
+  subdomain_provider_storage:
+    test_subdomain_tenant:
+      username: test_subdomain_tenant_username
+      password: test_subdomain_tenant_password
+      dbname:   test_subdomain_tenant_dbname
+      host:     test_subdomain_tenant_host

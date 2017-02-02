@@ -22,6 +22,7 @@ class DendeMultitenancyExtension extends Extension
         $config = $this->processConfiguration($configuration, $configs);
 
         $container->setParameter('dende_multitenancy.config.patched_commands', $this->createPatchedCommandsConfig($config));
+        $container->setParameter('dende_multitenancy.config.command_listener_config', $this->createCommandListenerConfig($config));
 
 //        $container->setParameter("dende_multidatabase.tenant_provider", $config["provider"]);
 //        $container->setParameter("dende_multidatabase.connection_name", $config["connection"]);
@@ -35,7 +36,7 @@ class DendeMultitenancyExtension extends Extension
         $loader->load('services.yml');
     }
 
-    private function createPatchedCommandsConfig($config)
+    private function createCommandListenerConfig($config)
     {
         $connections = $config['connections'];
 
@@ -46,5 +47,10 @@ class DendeMultitenancyExtension extends Extension
                 'desc'  => $connection['command_parameter_description'],
             ];
         }, $connections, array_keys($connections));
+    }
+
+    private function createPatchedCommandsConfig($config)
+    {
+        return $config['patched_commands'];
     }
 }

@@ -41,8 +41,12 @@ class TenantManager
         $this->providers[$connectionName] = $provider;
     }
 
-    public function switchConnection($connectionName)
+    public function switchConnection($connectionName, $tenantId = null)
     {
+        if($tenantId) {
+            $this->providers[$connectionName]->setTenantId($tenantId);
+        }
+
         $this->connections[$connectionName]->forceSwitch(
             $this->providers[$connectionName]->getTenant()
         );

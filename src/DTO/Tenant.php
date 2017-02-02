@@ -31,6 +31,15 @@ class Tenant
     }
 
     /**
+     * @param $array
+     * @return Tenant
+     */
+    public static function fromArray(array $array = [])
+    {
+        return new self($array["username"], $array["password"], $array["dbname"], $array["host"]);
+    }
+
+    /**
      * @return array
      */
     public function getArray()

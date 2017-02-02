@@ -36,8 +36,5 @@ class AppKernel extends Kernel
         parent::boot();
 
         AnnotationRegistry::registerLoader('class_exists');
-
-        $logger = $this->container->get('logger');
-        \Monolog\ErrorHandler::register($logger);
     }
 }

@@ -9,4 +9,10 @@ interface TenantProviderInterface
      * @return Tenant
      */
     public function getTenant();
+
+    /**
+     * @param $id
+     * @return void
+     */
+    public function setTenantId($id);
 }

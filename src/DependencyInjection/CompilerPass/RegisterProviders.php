@@ -10,7 +10,7 @@ class RegisterProviders implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container) {
         $tenantManagerDefinition = $container->getDefinition(
-            'dende_multitenanacy.tenant_manager'
+            'dende_multitenancy.tenant_manager'
         );
 
         $tenantProvidersDefinitions = $container->findTaggedServiceIds(

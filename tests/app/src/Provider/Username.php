@@ -12,4 +12,8 @@ class Username implements TenantProviderInterface
     public function getTenant() {
         return;
     }
+
+    public function setTenantId($id) {
+
+    }
 }

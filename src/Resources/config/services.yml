@@ -6,6 +6,14 @@ parameters:
 services:
   dende_multitenancy.listener.command:
     class: %dende_multitenancy.listener.command.class%
+    arguments:
+      - @dende_multitenancy.tenant_manager
+      - @=service('database_connection').getSchemaManager()
+      - %dende_multitenancy.config.patched_commands%
+      - %dende_multitenancy.config.command_listener_config%
+    tags:
+      - { name: kernel.event_listener, event: console.command, method: onConsoleCommand, priority: 255 }
 
-  dende_multitenanacy.tenant_manager:
+
+  dende_multitenancy.tenant_manager:
     class: %dende_multitenanacy.tenant_manager.class%

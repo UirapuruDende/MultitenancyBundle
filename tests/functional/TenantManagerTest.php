@@ -4,14 +4,18 @@ namespace Tests\Functional;
 use Dende\MultitenancyBundle\Manager\TenantManager;
 use Doctrine\DBAL\Connection;
 
-class DefaultTest extends FunctionalTestCase
+class TenantManagerTest extends FunctionalTestCase
 {
-    public function testTest()
+    /**
+     * @test
+     */
+    public function switching_connection()
     {
+        $this->markTestSkipped();
         $client = $this->createClient();
 
         /** @var TenantManager $manager */
-        $manager = $client->getContainer()->get('dende_multitenanacy.tenant_manager');
+        $manager = $client->getContainer()->get('dende_multitenancy.tenant_manager');
 
         $manager->switchConnection('first');
 
