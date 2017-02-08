@@ -1,0 +1,22 @@
+{# @var invoices Tests/App/Entity/Invoice[] #}
+{# @var invoice Tests/App/Entity/Invoice #}
+
+<html>
+<head>
+    <title>Test app</title>
+</head>
+<body>
+<h1>List of invoices</h1>
+<hr />
+<table>
+    <thead>
+    <tr><th>number</th><th>customer</th><th>created at</th></tr>
+    </thead>
+    <tbody>
+    {% for invoice in invoices %}
+        <tr><td>{{ invoice.number }}</td><td>{{ invoice.customer }}</td><td>{{ invoice.createdAt }}</td></tr>
+    {% endfor %}
+    </tbody>
+</table>
+</body>
+</html>

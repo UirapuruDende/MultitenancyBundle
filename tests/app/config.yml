@@ -1,3 +1,6 @@
+imports:
+    - { resource: 'src/Resources/services.yml' }
+
 framework:
     ide: "phpstorm://%%f:%%l"
     secret: "Three can keep a secret, if two of them are dead."
@@ -14,9 +17,6 @@ framework:
     csrf_protection:
       enabled: true
     session:
-#        cookie_lifetime:  %session_lifetime%
-#        gc_maxlifetime: 1800
-#        handler_id:  ~
         storage_id: session.storage.filesystem
     profiler:
         collect: true
@@ -68,9 +68,7 @@ doctrine:
           dbname:   ~
           user:     ~
           password: ~
-          path: "%kernel.cache_dir%/first.db"
           charset:  UTF8
-          server_version: "5.6"
           wrapper_class: Dende\MultitenancyBundle\Connection\Wrapper
         second:
           driver:   pdo_sqlite
@@ -78,9 +76,7 @@ doctrine:
           dbname:   ~
           user:     ~
           password: ~
-          path: "%kernel.cache_dir%/second.db"
           charset:  UTF8
-          server_version: "5.6"
           wrapper_class: Dende\MultitenancyBundle\Connection\Wrapper
         third:
           driver:   pdo_sqlite
@@ -88,27 +84,31 @@ doctrine:
           dbname:   ~
           user:     ~
           password: ~
-          path: "%kernel.cache_dir%/third.db"
           charset:  UTF8
-          server_version: "5.6"
           wrapper_class: Dende\MultitenancyBundle\Connection\Wrapper
 
     orm:
-        auto_generate_proxy_classes: %kernel.debug%
-        default_entity_manager:   first
-        entity_managers:
-          first:
-            auto_mapping: false
-            connection: first
-            mappings: ~
-          second:
-            auto_mapping: false
-            connection: first
-            mappings: ~
-          third:
-            auto_mapping: false
-            connection: first
-            mappings: ~
+      auto_generate_proxy_classes: %kernel.debug%
+      default_entity_manager:   first
+      entity_managers:
+        first:
+          auto_mapping:   false
+          connection:     first
+          mappings:
+            Invoices:
+              type:       yml
+              mapping:    true
+              dir:        %kernel.root_dir%/src/Resources/mapping/first
+              prefix:     Tests\App\Entity
+              is_bundle:  false
+        second:
+          auto_mapping: false
+          connection: first
+          mappings: ~
+        third:
+          auto_mapping: false
+          connection: first
+          mappings: ~
 
 dende_multitenancy:
   patched_commands:
@@ -127,29 +127,3 @@ dende_multitenancy:
       command_parameter_name:         country
       command_parameter_description:  Provide country code for third connection tenant
       fixtures_dir: ~
-
-services:
-  provider.subdomain:
-    class: Tests\App\Provider\Subdomain
-    arguments:
-      - %subdomain_provider_storage%
-    tags:
-      - {name: tenant_provider, connection_name: first}
-
-  provider.username:
-    class: Tests\App\Provider\Username
-    tags:
-      - {name: tenant_provider, connection_name: second}
-
-  provider.country:
-    class: Tests\App\Provider\Country
-    tags:
-      - {name: tenant_provider, connection_name: third}
-
-parameters:
-  subdomain_provider_storage:
-    test_subdomain_tenant:
-      username: test_subdomain_tenant_username
-      password: test_subdomain_tenant_password
-      dbname:   test_subdomain_tenant_dbname
-      host:     test_subdomain_tenant_host

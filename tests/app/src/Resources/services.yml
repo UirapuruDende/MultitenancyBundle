@@ -1,0 +1,52 @@
+---
+parameters:
+  subdomain_provider_storage:
+    test_subdomain_tenant_1:
+      username: 1_test_subdomain_tenant_username
+      password: 1_test_subdomain_tenant_password
+      dbname:   1_test_subdomain_tenant_dbname
+      host:     1_test_subdomain_tenant_host
+      path:     %kernel.cache_dir%/mickey_mouse.db
+
+    test_subdomain_tenant_2:
+      username: 2_test_subdomain_tenant_username
+      password: 2_test_subdomain_tenant_password
+      dbname:   2_test_subdomain_tenant_dbname
+      host:     2_test_subdomain_tenant_host
+      path:     %kernel.cache_dir%/donald_duck.db
+
+    test_subdomain_tenant_3:
+      username: 3_test_subdomain_tenant_username
+      password: 3_test_subdomain_tenant_password
+      dbname:   3_test_subdomain_tenant_dbname
+      host:     3_test_subdomain_tenant_host
+      path:     %kernel.cache_dir%/pluto.db
+
+services:
+  provider.subdomain:
+    class: Tests\App\Provider\Subdomain
+    arguments:
+      - %subdomain_provider_storage%
+    tags:
+      - {name: tenant_provider, connection_name: first}
+
+  provider.username:
+    class: Tests\App\Provider\Username
+    tags:
+      - {name: tenant_provider, connection_name: second}
+
+  provider.country:
+    class: Tests\App\Provider\Country
+    tags:
+      - {name: tenant_provider, connection_name: third}
+
+  controller.default:
+    class: Tests\App\Controller\DefaultController
+    calls:
+        - [ setContainer, [ @service_container ]]
+
+  repository.invoice:
+    class: Tests\App\Entity\InvoiceRepository
+    arguments:
+      - Tests\App\Entity\Invoice
+    factory: [@doctrine.orm.first_entity_manager, getRepository]

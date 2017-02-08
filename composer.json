@@ -36,5 +36,12 @@
   "config": {
     "bin-dir": "bin",
     "preferred-install": "source"
+  },
+  "scripts": {
+    "prepare-db" : [
+      "./console.sh doctrine:database:drop --subdomain=test_subdomain_tenant_1 --if-exists --no-interaction --force --quiet",
+      "./console.sh doctrine:database:create --subdomain=test_subdomain_tenant_1 --if-not-exists --no-interaction --quiet",
+      "./console.sh doctrine:schema:create --subdomain=test_subdomain_tenant_1 --no-interaction --quiet"
+    ]
   }
 }

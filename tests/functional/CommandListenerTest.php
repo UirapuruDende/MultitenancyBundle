@@ -77,7 +77,7 @@ class CommandListenerTest extends FunctionalTestCase
      */
     public function listener_switches_connections()
     {
-        $command = 'doctrine:schema:update --subdomain=test_subdomain_tenant';
+        $command = 'doctrine:schema:update --subdomain=test_subdomain_tenant_1';
 
         $client = self::createClient();
         $application = new Application($client->getKernel());
@@ -94,6 +94,6 @@ class CommandListenerTest extends FunctionalTestCase
 
         $params = $connection->getParams();
 
-        $this->assertEquals('test_subdomain_tenant_dbname', $params['dbname']);
+        $this->assertEquals('1_test_subdomain_tenant_dbname', $params['dbname']);
     }
 }

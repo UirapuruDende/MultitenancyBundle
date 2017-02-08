@@ -15,6 +15,9 @@ class Tenant
     /** @var  string */
     protected $host;
 
+    /** @var  string */
+    protected $path;
+
     /**
      * Tenant constructor.
      * @param $username
@@ -22,12 +25,13 @@ class Tenant
      * @param $dbname
      * @param $host
      */
-    public function __construct($username, $password, $dbname, $host)
+    public function __construct($username, $password, $dbname, $host, $path = null)
     {
         $this->username = $username;
         $this->password = $password;
         $this->dbname = $dbname;
         $this->host = $host;
+        $this->path = $path;
     }
 
     /**
@@ -36,7 +40,7 @@ class Tenant
      */
     public static function fromArray(array $array = [])
     {
-        return new self($array["username"], $array["password"], $array["dbname"], $array["host"]);
+        return new self($array["username"], $array["password"], $array["dbname"], $array["host"], $array["path"]);
     }
 
     /**
@@ -48,7 +52,8 @@ class Tenant
             'username' => $this->username,
             'password' => $this->password,
             'dbname'   => $this->dbname,
-            'host'     => $this->host
+            'host'     => $this->host,
+            'path'     => $this->path,
         ];
     }
 }
