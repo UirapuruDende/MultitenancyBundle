@@ -22,6 +22,17 @@ class DatabaseSwitchingTest extends FunctionalTestCase
             $schemaTool = new SchemaTool($entityManager);;
         }
 
+        prepare : {
+            $tenantManager->switchConnection('first', 'test_subdomain_tenant_1');
+            $schemaTool->dropDatabase();
+
+            $tenantManager->switchConnection('first', 'test_subdomain_tenant_2');
+            $schemaTool->dropDatabase();
+
+            $tenantManager->switchConnection('first', 'test_subdomain_tenant_3');
+            $schemaTool->dropDatabase();
+        }
+
         insert_data: {
             $tenantManager->switchConnection('first', 'test_subdomain_tenant_1');
             $schemaTool->createSchema($metadata);

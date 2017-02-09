@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "d46c865c25b59b675e28db46d677a6dd",
-    "content-hash": "d333bd25feea9ff2736b72033b46a833",
+    "hash": "603570e5c0504e539684750b16368669",
+    "content-hash": "881438cfdd4d06ca4ead8b44a66b2e37",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -1798,21 +1798,20 @@
         },
         {
             "name": "twig/twig",
-            "version": "2.x-dev",
+            "version": "1.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/twigphp/Twig.git",
-                "reference": "2b0d2cb71cc58ceb4133593a83a8f9e82f22187f"
+                "reference": "d6715ac8c3a77ae6d0ebad9ff12511cc1b27f4a7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/twigphp/Twig/zipball/2b0d2cb71cc58ceb4133593a83a8f9e82f22187f",
-                "reference": "2b0d2cb71cc58ceb4133593a83a8f9e82f22187f",
+                "url": "https://api.github.com/repos/twigphp/Twig/zipball/d6715ac8c3a77ae6d0ebad9ff12511cc1b27f4a7",
+                "reference": "d6715ac8c3a77ae6d0ebad9ff12511cc1b27f4a7",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.0",
-                "symfony/polyfill-mbstring": "~1.0"
+                "php": ">=5.2.7"
             },
             "require-dev": {
                 "symfony/debug": "~2.7",
@@ -1821,7 +1820,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.1-dev"
+                    "dev-master": "1.31-dev"
                 }
             },
             "autoload": {
@@ -1856,7 +1855,7 @@
             "keywords": [
                 "templating"
             ],
-            "time": "2017-01-23 21:36:30"
+            "time": "2017-02-03 21:34:15"
         }
     ],
     "packages-dev": [
