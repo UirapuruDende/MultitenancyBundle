@@ -45,12 +45,13 @@ class Wrapper extends Connection
             $this->close();
         }
 
-        list($username, $password, $dbname, $host) = array_values($tenant->getArray());
+        list($username, $password, $dbname, $host, $path) = array_values($tenant->getArray());
 
         $this->_params['host'] = $host;
         $this->_params['dbname'] = $dbname;
         $this->_params['user'] = $username;
         $this->_params['password'] = $password;
+        $this->_params['path'] = $path;
 
         if($connect) {
             $this->connect();

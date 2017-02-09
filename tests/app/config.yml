@@ -69,6 +69,7 @@ doctrine:
           user:     ~
           password: ~
           charset:  UTF8
+          path: /tmp/test.db
           wrapper_class: Dende\MultitenancyBundle\Connection\Wrapper
         second:
           driver:   pdo_sqlite
