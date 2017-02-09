@@ -9,3 +9,4 @@
 /bin/
 tmp*
 composer.phar
+composer.lock
