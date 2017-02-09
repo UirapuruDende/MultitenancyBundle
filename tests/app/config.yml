@@ -119,12 +119,9 @@ dende_multitenancy:
     first:
       command_parameter_name:         subdomain
       command_parameter_description:  Provide subdomain for first connection tenant
-      fixtures_dir: ~
     second:
       command_parameter_name:         user-email
       command_parameter_description:  Provide user email for second connection tenant
-      fixtures_dir: ~
     third:
       command_parameter_name:         country
       command_parameter_description:  Provide country code for third connection tenant
-      fixtures_dir: ~
