@@ -73,3 +73,8 @@ A [Symfony 2](http://symfony.com) bundle providing an easy to use database switc
        $container->get('dende_multitenanacy.tenant_manager')->switchConnection($connectionName); // connection_name from service definition's tag
        ```
        
+       you can also directly pass tenant id (subdomain, username, something unique that TenantProvider will use to find proper Tenant and will pass it to connection):
+       
+       ```php
+       $container->get('dende_multitenanacy.tenant_manager')->switchConnection('my_connection', 'spiderman'); // connection_name from service definition's tag
+       ```
