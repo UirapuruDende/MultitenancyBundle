@@ -21,7 +21,8 @@
     "phpunit/phpunit": "5.7.9",
     "symfony/monolog-bundle": "3.0.1",
     "liip/functional-test-bundle": "1.7.0",
-    "twig/twig" : "^1"
+    "twig/twig" : "^1",
+    "sebastian/global-state" : "^1.0"
   },
   "autoload": {
     "psr-4": {
