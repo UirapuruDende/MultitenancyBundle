@@ -16,4 +16,5 @@ services:
 
 
   dende_multitenancy.tenant_manager:
+    arguments: ['@event_dispatcher']
     class: %dende_multitenanacy.tenant_manager.class%
