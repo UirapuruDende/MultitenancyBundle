@@ -6,8 +6,10 @@ use Dende\MultitenancyBundle\Event\PostSwitchConnection;
 use Dende\MultitenancyBundle\Exception\TenantNotFoundException;
 use Dende\MultitenancyBundle\Provider\TenantProviderInterface;
 use Doctrine\DBAL\Connection;
+use Doctrine\ORM\Tools\SchemaTool;
 use Exception;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Doctrine\DBAL\Exception\ConnectionException;
 
 class TenantManager
 {
@@ -74,7 +76,14 @@ class TenantManager
             throw new TenantNotFoundException($tenantId, $connectionName);
         }
 
-        $this->connections[$connectionName]->forceSwitch($tenant);
+        try {
+            $this->connections[$connectionName]->forceSwitch($tenant);
+        } catch (ConnectionException $e) {
+            if(!strstr($e->getMessage(), 'Unknown database')) {
+                throw $e;
+            }
+            return;
+        }
 
         $this->dispatcher->dispatch(PostSwitchConnection::NAME, new PostSwitchConnection(
             $tenant,
