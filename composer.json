@@ -10,6 +10,7 @@
     }
   ],
   "require": {
+    "php": ">=7.1",
     "doctrine/dbal": "^2",
     "symfony/symfony": "^2|^3",
     "sensio/framework-extra-bundle": "^3",
@@ -37,6 +38,9 @@
   },
   "config": {
     "bin-dir": "bin",
-    "preferred-install": "source"
+    "preferred-install": "source",
+    "platform": {
+      "php": "7.1"
+    }
   }
 }

@@ -24,10 +24,6 @@ class CommandListener
     /** @var array */
     private $config;
 
-    /**
-     * ClubConnectionCommandListener constructor.
-     * @param array $config
-     */
     public function __construct(TenantManager $tenantManager, AbstractSchemaManager $schemaManager, $allowedCommands = [], $config = [])
     {
         $this->tenantManager = $tenantManager;
@@ -36,11 +32,7 @@ class CommandListener
         $this->config = $config;
     }
 
-    /**
-     * @param ConsoleCommandEvent $event
-     * @throws Exception
-     */
-    public function onConsoleCommand(ConsoleCommandEvent $event)
+    public function onConsoleCommand(ConsoleCommandEvent $event) : void
     {
         $command = $event->getCommand();
         $input = $event->getInput();
@@ -74,11 +66,7 @@ class CommandListener
         }
     }
 
-    /**
-     * @param Command $command
-     * @return bool
-     */
-    private function isProperCommand(Command $command)
+    private function isProperCommand(Command $command) : bool
     {
         $testedName = $command->getName();
 

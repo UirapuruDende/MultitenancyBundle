@@ -39,7 +39,7 @@ class Wrapper extends Connection
      * @param $username
      * @param $password
      */
-    public function forceSwitch(Tenant $tenant, $connect = true)
+    public function forceSwitch(Tenant $tenant, ?bool $connect = true)
     {
         if ($this->isConnected()) {
             $this->close();
@@ -57,10 +57,8 @@ class Wrapper extends Connection
             $this->connect();
         }
     }
-    /**
-     * {@inheritDoc}
-     */
-    public function connect()
+
+    public function connect() : bool
     {
         if ($this->isConnected()) {
             return true;
@@ -83,18 +81,12 @@ class Wrapper extends Connection
         return true;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function isConnected()
+    public function isConnected() : bool
     {
         return $this->isConnected;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public function close()
+    public function close() : void
     {
         if ($this->isConnected()) {
             parent::close();
@@ -102,10 +94,7 @@ class Wrapper extends Connection
         }
     }
 
-    /**
-     * @return array
-     */
-    public function getParams()
+    public function getParams() : ?array
     {
         return $this->_params;
     }

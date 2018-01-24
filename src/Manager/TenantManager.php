@@ -28,30 +28,17 @@ class TenantManager
      */
     protected $dispatcher;
 
-    /**
-     * TenantManager constructor.
-     * @param EventDispatcher $dispatcher
-     */
     public function __construct(EventDispatcherInterface $dispatcher)
     {
         $this->dispatcher = $dispatcher;
     }
 
-    /**
-     * @param $name
-     * @param Connection $connection
-     */
-    public function registerConnection($name, Connection $connection)
+    public function registerConnection(string $name, Connection $connection) : void
     {
         $this->connections[$name] = $connection;
     }
 
-    /**
-     * @param $connectionName
-     * @param TenantProviderInterface $provider
-     * @throws Exception
-     */
-    public function registerProvider($connectionName, TenantProviderInterface $provider)
+    public function registerProvider(string $connectionName, TenantProviderInterface $provider) : void
     {
         if(!in_array($connectionName, array_keys($this->connections))) {
             throw new Exception(sprintf('Connection %s is not registered in TenantManager!', $connectionName));
@@ -60,11 +47,7 @@ class TenantManager
         $this->providers[$connectionName] = $provider;
     }
 
-    /**
-     * @param string $connectionName
-     * @param string $tenantId
-     */
-    public function switchConnection($connectionName, $tenantId = null)
+    public function switchConnection(string $connectionName, ?string $tenantId = null)
     {
         if($tenantId) {
             $this->providers[$connectionName]->setTenantId($tenantId);

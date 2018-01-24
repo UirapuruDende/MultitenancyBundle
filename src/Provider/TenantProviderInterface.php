@@ -5,14 +5,7 @@ use Dende\MultitenancyBundle\DTO\Tenant;
 
 interface TenantProviderInterface
 {
-    /**
-     * @return Tenant
-     */
-    public function getTenant();
+    public function getTenant() : Tenant;
 
-    /**
-     * @param $id
-     * @return void
-     */
-    public function setTenantId($id);
+    public function setTenantId(string $id) : void;
 }
